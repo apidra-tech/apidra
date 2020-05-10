@@ -1,0 +1,36 @@
+version: '2'
+services:
+  backend:
+    build: .
+    environment:
+      PHP_XDEBUG_ENABLED: 1
+    volumes:
+      - .:/var/www/html
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    ports:
+      - "8001:80"
+    privileged: true
+    depends_on:
+      - db
+    networks:
+      - backend
+    restart: on-failure
+
+  db:
+    image: mariadb:10.4
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    environment:
+      MYSQL_ROOT_PASSWORD: befluent
+      MYSQL_DATABASE: befluent
+      MYSQL_USER: befluent
+      MYSQL_PASSWORD: befluent
+    networks:
+      - backend
+    restart: on-failure
+    ports:
+      - "3307:3306"
+
+networks:
+  backend:
+    driver: bridge
