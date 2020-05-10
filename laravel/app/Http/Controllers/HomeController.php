@@ -24,8 +24,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $date = new DateTime();
-
         return view('home');
     }
 }
